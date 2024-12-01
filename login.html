@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://sanfactory.vn/wp-content/uploads/2023/10/logo-vietcombank-2-1400x645.png" alt="Vietcombank Logo" class="bank-logo">
+        <form autocomplete="off" id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" 
+                       autocomplete="off" 
+                       autocorrect="off" 
+                       autocapitalize="off" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password"
+                       autocomplete="new-password" required>
+            </div>
+            <button type="submit" class="login-btn">Đăng nhập</button>
+        </form>
+        <button onclick="window.location.href='register.html'" class="link-btn">
+            Chưa có tài khoản? Đăng ký ngay
+        </button>
+    </div>
+    <script>
+        const emailInput = document.getElementById('email');
+    const emailMessageDiv = document.createElement('div');
+    emailMessageDiv.className = 'email-message';
+    emailInput.parentNode.appendChild(emailMessageDiv);
+
+    emailInput.addEventListener('input', function() {
+        const email = this.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailRegex.test(email)) {
+            emailMessageDiv.textContent = 'Vui lòng nhập email hợp lệ';
+            this.setCustomValidity('Email không hợp lệ');
+        } else {
+            emailMessageDiv.textContent = '';
+            this.setCustomValidity('');
+        }
+    });
+
+    const passwordInput = document.getElementById('password');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'password-message';
+    passwordInput.parentNode.appendChild(messageDiv);
+
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let messages = [];
+        
+        // Check minimum length
+        if (password.length < 8) {
+            messages.push('• Ít nhất 8 ký tự');
+        }
+        
+        // Check for numbers
+        if (!/\d/.test(password)) {
+            messages.push('• Ít nhất 1 số');
+        }
+        
+        // Check for uppercase
+        if (!/[A-Z]/.test(password)) {
+            messages.push('• Ít nhất 1 chữ in hoa');
+        }
+        
+        // Check for special characters
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            messages.push('• Ít nhất 1 ký tự đặc biệt');
+        }
+
+        // Display messages with line breaks
+        if (messages.length > 0) {
+            messageDiv.textContent = messages.join('\n');
+            this.setCustomValidity('Invalid password');
+        } else {
+            messageDiv.textContent = '';
+            this.setCustomValidity('');
+        }
+    });
+
+    // Add form submission handler
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailValid = !emailInput.validity.customError;
+        const passwordValid = !passwordInput.validity.customError;
+        
+        if (emailValid && passwordValid) {
+            alert('Đăng nhập thành công!');
+        }
+    });
+    </script>
+</body>
+</html>

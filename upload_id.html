@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tải lên CMND/CCCD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container upload-container">
+        <img src="https://sanfactory.vn/wp-content/uploads/2023/10/logo-vietcombank-2-1400x645.png" alt="Vietcombank Logo" class="bank-logo">
+        <form id="uploadForm">
+            <div class="preview-container">
+                <video id="camera" autoplay></video>
+                <img id="preview" alt="Image preview">
+                <p id="placeholder">Tải lên hoặc chụp ảnh CMND/CCCD của bạn</p>
+            </div>
+            <div class="upload-options">
+                <button type="button" class="upload-btn" id="cameraBtn">Chụp ảnh</button>
+                <input type="file" id="fileInput" accept="image/*" style="display: none">
+                <button type="button" class="upload-btn" id="fileBtn">Tải lên</button>
+            </div>
+            <button type="submit" class="upload-btn">Xác nhận</button>
+        </form>
+        <button onclick="window.location.href='login.html'" class="link-btn">
+            Quay lại trang đăng nhập
+        </button>
+    </div>
+
+    <script>
+        const camera = document.getElementById('camera');
+        const preview = document.getElementById('preview');
+        const placeholder = document.getElementById('placeholder');
+        const cameraBtn = document.getElementById('cameraBtn');
+        const fileBtn = document.getElementById('fileBtn');
+        const fileInput = document.getElementById('fileInput');
+        let stream = null;
+
+        cameraBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                camera.srcObject = stream;
+                camera.style.display = 'block';
+                preview.style.display = 'none';
+                placeholder.style.display = 'none';
+            } catch (err) {
+                alert('Không thể truy cập camera: ' + err);
+            }
+        });
+
+        fileBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    camera.style.display = 'none';
+                    placeholder.style.display = 'none';
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Tải lên thành công!');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

