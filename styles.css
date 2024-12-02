@@ -110,7 +110,7 @@ input[type="number"] {
     font-weight: bold;
     color: #A1C038;
     margin-top: 5px;
-    /* Added to align formatted amount below the input */
+    /* Align formatted amount below the input */
     text-align: right;
     font-size: 14px;
 }
@@ -910,4 +910,15 @@ h2::after {
         padding: 10px;
         font-size: 14px;
     }
+}
+
+/* Special Tag Styles */
+.special-tag {
+    display: inline-block;
+    background-color: #FFD700;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    margin-left: 10px;
 }
