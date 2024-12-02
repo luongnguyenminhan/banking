@@ -28,73 +28,74 @@
     </div>
     <script>
         const emailInput = document.getElementById('email');
-    const emailMessageDiv = document.createElement('div');
-    emailMessageDiv.className = 'email-message';
-    emailInput.parentNode.appendChild(emailMessageDiv);
+        const emailMessageDiv = document.createElement('div');
+        emailMessageDiv.className = 'email-message';
+        emailInput.parentNode.appendChild(emailMessageDiv);
 
-    emailInput.addEventListener('input', function() {
-        const email = this.value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
-        if (!emailRegex.test(email)) {
-            emailMessageDiv.textContent = 'Vui lòng nhập email hợp lệ';
-            this.setCustomValidity('Email không hợp lệ');
-        } else {
-            emailMessageDiv.textContent = '';
-            this.setCustomValidity('');
-        }
-    });
+        emailInput.addEventListener('input', function() {
+            const email = this.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                emailMessageDiv.textContent = 'Vui lòng nhập email hợp lệ';
+                this.setCustomValidity('Email không hợp lệ');
+            } else {
+                emailMessageDiv.textContent = '';
+                this.setCustomValidity('');
+            }
+        });
 
-    const passwordInput = document.getElementById('password');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'password-message';
-    passwordInput.parentNode.appendChild(messageDiv);
+        const passwordInput = document.getElementById('password');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'password-message';
+        passwordInput.parentNode.appendChild(messageDiv);
 
-    passwordInput.addEventListener('input', function() {
-        const password = this.value;
-        let messages = [];
-        
-        // Check minimum length
-        if (password.length < 8) {
-            messages.push('• Ít nhất 8 ký tự');
-        }
-        
-        // Check for numbers
-        if (!/\d/.test(password)) {
-            messages.push('• Ít nhất 1 số');
-        }
-        
-        // Check for uppercase
-        if (!/[A-Z]/.test(password)) {
-            messages.push('• Ít nhất 1 chữ in hoa');
-        }
-        
-        // Check for special characters
-        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            messages.push('• Ít nhất 1 ký tự đặc biệt');
-        }
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let messages = [];
+            
+            // Check minimum length
+            if (password.length < 8) {
+                messages.push('• Ít nhất 8 ký tự');
+            }
+            
+            // Check for numbers
+            if (!/\d/.test(password)) {
+                messages.push('• Ít nhất 1 số');
+            }
+            
+            // Check for uppercase
+            if (!/[A-Z]/.test(password)) {
+                messages.push('• Ít nhất 1 chữ in hoa');
+            }
+            
+            // Check for special characters
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                messages.push('• Ít nhất 1 ký tự đặc biệt');
+            }
 
-        // Display messages with line breaks
-        if (messages.length > 0) {
-            messageDiv.textContent = messages.join('\n');
-            this.setCustomValidity('Invalid password');
-        } else {
-            messageDiv.textContent = '';
-            this.setCustomValidity('');
-        }
-    });
+            // Display messages with line breaks
+            if (messages.length > 0) {
+                messageDiv.textContent = messages.join('\n');
+                this.setCustomValidity('Invalid password');
+            } else {
+                messageDiv.textContent = '';
+                this.setCustomValidity('');
+            }
+        });
 
-    // Add form submission handler
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const emailValid = !emailInput.validity.customError;
-        const passwordValid = !passwordInput.validity.customError;
-        
-        if (emailValid && passwordValid) {
-            alert('Đăng nhập thành công!');
-        }
-    });
+        // Add form submission handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailValid = !emailInput.validity.customError;
+            const passwordValid = !passwordInput.validity.customError;
+            
+            if (emailValid && passwordValid) {
+                alert('Đăng nhập thành công!');
+                window.location.href = 'service_selection.html'; // Redirect to service selection
+            }
+        });
     </script>
 </body>
 </html>
