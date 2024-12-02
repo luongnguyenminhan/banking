@@ -72,14 +72,19 @@
             
             // Simulate OTP verification
             setTimeout(() => {
-                if (from === 'login') {
+                const urlParams = new URLSearchParams(window.location.search);
+                const from = urlParams.get('from');
+                const invoice = urlParams.get('invoice');
+                const amount = urlParams.get('amount');
+
+                if (from === 'login' || from === 'register') {
                     window.location.href = 'service_selection.html';
-                } else if (from === 'register') {
-                    window.location.href = 'login.html';
-                } else if (from === 'transaction_form') {
-                    window.location.href = 'transaction_result.html?success=true';
+                } else if (from === 'bill_payment') {
+                    // Redirect to payment confirmation with transaction details
+                    const transactionId = Math.floor(Math.random() * 1000000);
+                    window.location.href = `payment_confirmation.html?id=${transactionId}&amount=${amount}`;
                 } else {
-                    window.location.href = 'login.html'; // Default redirection
+                    window.location.href = 'login.html';
                 }
             }, 1500);
         });

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thanh toán hóa đơn</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Thanh toán</h2>
+        <form id="billPaymentForm">
+            <div class="form-group">
+                <label for="invoiceNumber">Số hóa đơn hoặc Mã khách hàng</label>
+                <input type="text" id="invoiceNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Số tiền</label>
+
+                <input type="text" id="amount" required>
+                <div class="formatted-amount" id="formattedAmount"></div>
+            </div>
+            <button type="submit" class="submit-btn">Xác nhận thanh toán</button>
+        </form>
+    </div>
+    <script>
+        const amountInput = document.getElementById('amount');
+        const formattedAmountDiv = document.getElementById('formattedAmount');
+
+        amountInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if(value) {
+                let formattedValue = parseInt(value, 10).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                formattedAmountDiv.textContent = formattedValue;
+                amountInput.value = formattedValue;
+            } else {
+                formattedAmountDiv.textContent = '';
+                amountInput.value = '';
+            }
+        });
+
+        document.getElementById('billPaymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const invoiceNumber = document.getElementById('invoiceNumber').value;
+            const rawAmount = document.getElementById('amount').value.replace(/[^0-9]/g, '');
+            const formattedAmount = parseFloat(rawAmount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+            // Validate inputs
+            if(invoiceNumber && rawAmount){
+                // Redirect to OTP verification with query parameters
+                window.location.href = `OTP.html?from=bill_payment&invoice=${invoiceNumber}&amount=${formattedAmount}`;
+            } else {
+                alert('Vui lòng nhập đầy đủ thông tin.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -24,6 +24,7 @@
             { id: 'service4', name: 'Dịch vụ 4', price: 400000 },
             { id: 'service5', name: 'Dịch vụ 5', price: 500000 },
             { id: 'service6', name: 'Dịch vụ 6', price: 600000 },
+            { id: 'billPayment', name: 'Thanh toán hóa đơn', price: "Thanh toán cho hóa đơn của bạn" },
             // Add more services as needed
         ];
 
@@ -48,12 +49,22 @@
                 const paginatedServices = services.slice(startIndex, endIndex);
         
                 paginatedServices.forEach(service => {
+                    let priceDisplay;
+                    let specialTag = '';
+                    
+                    if (service.id === 'billPayment') {
+                        priceDisplay = service.price; // "Thanh toán cho hóa đơn của bạn"
+                        specialTag = '<span class="special-tag">Đặc biệt</span>';
+                    } else {
+                        priceDisplay = `${service.price.toLocaleString()} VNĐ`;
+                    }
+        
                     const serviceItem = document.createElement('div');
                     serviceItem.className = 'service-item';
                     serviceItem.innerHTML = `
                         <h3>${service.name}</h3>
-                        <p>Giá: ${service.price.toLocaleString()} VNĐ</p>
-                        <button class="select-service-btn" onclick="selectService('${service.id}', ${service.price})">
+                        <p>Mô tả: ${priceDisplay}</p>
+                        <button class="select-service-btn" onclick="selectService('${service.id}', ${service.id === 'billPayment' ? `'${service.price}'` : service.price})">
                             Chọn Dịch Vụ
                         </button>
                     `;
@@ -84,7 +95,11 @@
         }
 
         function selectService(serviceId, price) {
-            window.location.href = `transaction_form.html?service=${serviceId}&price=${price}`;
+            if (serviceId === 'billPayment') {
+                window.location.href = `bill_payment.html?price=${price}`;
+            } else {
+                window.location.href = `transaction_form.html?service=${serviceId}&price=${price}`;
+            }
         }
 
         // Initialize display

@@ -31,6 +31,20 @@ The Transaction App is a web application designed to facilitate user transaction
 - After logging in, users can select services and fill out transaction forms.
 - The application provides feedback on transaction success or failure.
 
+## Bill Payment Flow
+
+1. Đăng nhập vào tài khoản trên ứng dụng hoặc website Vietcombank.
+2. Chọn mục "Thanh toán hóa đơn" và chọn dịch vụ cần thanh toán.
+3. Nhập mã khách hàng hoặc số hóa đơn.
+4. Xác nhận thông tin hóa đơn và số tiền thanh toán.
+5. Xác nhận thanh toán bằng cách nhập mã OTP.
+6. Tiếp nhận yêu cầu thanh toán từ người dùng và xác minh tính hợp lệ của hóa đơn thông qua nhà cung cấp dịch vụ (kiểm tra số hóa đơn, số tiền, v.v.).
+7. Kiểm tra thông tin chi tiết của giao dịch thanh toán cho các giao dịch yêu cầu phê duyệt.
+8. Xem xét phê duyệt hoặc từ chối thanh toán của yêu cầu phê duyệt.
+9. Hoàn tất thanh toán với nhà cung cấp dịch vụ và trừ tiền từ tài khoản người dùng.
+10. Gửi thông báo xác nhận thanh toán đến người dùng.
+11. Nhận thông báo xác nhận thanh toán.
+
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
 

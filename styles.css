@@ -105,6 +105,16 @@ input[type="number"] {
     cursor: not-allowed;
 }
 
+/* Optional: Style for formatted amount display */
+.form-group .formatted-amount {
+    font-weight: bold;
+    color: #A1C038;
+    margin-top: 5px;
+    /* Added to align formatted amount below the input */
+    text-align: right;
+    font-size: 14px;
+}
+
 /* Button Styles */
 .login-btn,
 .upload-btn,
@@ -838,5 +848,66 @@ h2::after {
     }
     .page-title {
         font-size: 2em;
+    }
+}
+
+/* Confirmation Page Styles */
+.confirmation-container {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.confirmation-container h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.confirmation-container p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333333;
+}
+
+.confirmation-container .submit-btn {
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirmation-container .submit-btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .confirmation-container {
+        margin: 50px 20px;
+        padding: 20px;
+    }
+
+    .confirmation-container h2 {
+        font-size: 20px;
+    }
+
+    .confirmation-container p {
+        font-size: 16px;
+    }
+
+    .confirmation-container .submit-btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
 }
