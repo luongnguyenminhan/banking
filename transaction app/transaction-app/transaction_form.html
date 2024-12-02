@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thông Tin Giao Dịch</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .transaction-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            margin-bottom: 30px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 66.6%;
+            background: linear-gradient(to right, #A1C038, #677b24);
+            transition: width 0.3s ease;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #A1C038;
+            outline: none;
+        }
+
+        .form-control.readonly {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #A1C038 0%, #677b24 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .transaction-container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="transaction-form-container">
+        <div class="progress-bar">
+            <div class="progress-bar-fill"></div>
+        </div>
+        
+        <div class="form-header">
+            <h2>Thông Tin Giao Dịch</h2>
+            <p>Vui lòng xác nhận thông tin thanh toán của bạn</p>
+        </div>
+
+        <form id="transactionForm">
+            <div class="form-group">
+                <label for="serviceName">Dịch Vụ</label>
+                <input type="text" id="serviceName" class="form-control readonly" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Số Tiền</label>
+                <input type="text" id="price" class="form-control readonly" readonly>
+                <input type="hidden" id="priceValue">
+            </div>
+
+            <div class="form-group">
+                <label for="recipient">Người Nhận</label>
+                <input type="text" id="recipient" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalInfo">Thông Tin Bổ Sung</label>
+                <input type="text" id="content" class="form-control" rows="4">
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>Xác Nhận Giao Dịch</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <a href="service_selection.html" class="back-btn">
+            &larr; Quay lại chọn dịch vụ
+        </a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceId = urlParams.get('service');
+        const price = urlParams.get('price');
+
+        const services = [
+            { id: 'service1', name: 'Dịch vụ 1', price: 100000 },
+            { id: 'service2', name: 'Dịch vụ 2', price: 200000 },
+            { id: 'service3', name: 'Dịch vụ 3', price: 300000 },
+            { id: 'service4', name: 'Dịch vụ 4', price: 400000 },
+            { id: 'service5', name: 'Dịch vụ 5', price: 500000 },
+            { id: 'service6', name: 'Dịch vụ 6', price: 600000 }
+        ];
+
+        const selectedService = services.find(s => s.id === serviceId);
+
+        if (selectedService && selectedService.price == price) {
+            document.getElementById('serviceName').value = selectedService.name;
+            document.getElementById('price').value = selectedService.price.toLocaleString() + ' VNĐ';
+            document.getElementById('priceValue').value = selectedService.price;
+        } else {
+            alert('Thông tin dịch vụ không hợp lệ. Vui lòng thử lại.');
+            window.location.href = 'service_selection.html';
+        }
+
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('.submit-btn');
+            const spinner = this.querySelector('.spinner');
+            
+            submitBtn.classList.add('loading');
+            spinner.style.display = 'block';
+            
+            // Simulate processing
+            setTimeout(() => {
+                window.location.href = 'transaction_result.html?success=true';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
