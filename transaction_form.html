@@ -101,7 +101,6 @@
         }
 
         document.getElementById('transactionForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
             
             if (!validateAccountNumber(document.getElementById('accountNumber'))) {
                 return;
@@ -113,7 +112,6 @@
             submitBtn.classList.add('loading');
             spinner.style.display = 'block';
             
-            // Store form data in sessionStorage
             const formData = {
                 service: document.getElementById('serviceName').value,
                 price: document.getElementById('priceValue').value,
@@ -124,7 +122,6 @@
             
             sessionStorage.setItem('transactionData', JSON.stringify(formData));
             
-            // Redirect to OTP page after a short delay
             setTimeout(() => {
                 window.location.href = 'OTP.html?from=transaction_form';
             }, 1500);
