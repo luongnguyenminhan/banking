@@ -24,7 +24,7 @@
 
         .progress-bar-fill {
             height: 100%;
-            width: 66.6%;
+            width: 100%;
             background: linear-gradient(to right, #A1C038, #677b24);
             transition: width 0.3s ease;
         }
@@ -125,6 +125,17 @@
             animation: spin 0.8s linear infinite;
             margin: 0 auto;
         }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-control.error {
+            border-color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -151,12 +162,23 @@
             </div>
 
             <div class="form-group">
-                <label for="recipient">Người Nhận</label>
+                <label for="recipient">Tên người thụ hưởng</label>
                 <input type="text" id="recipient" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="additionalInfo">Thông Tin Bổ Sung</label>
+                <label for="accountNumber">Số Tài Khoản Thụ Hưởng</label>
+                <input type="text" id="accountNumber" class="form-control" required 
+                       pattern="[0-9]{8,16}" 
+                       oninput="validateAccountNumber(this)"
+                       maxlength="16">
+                <div id="accountNumberError" class="error-message">
+                    Số tài khoản phải từ 8-16 chữ số
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalInfo">Nội dung chuyển khoản</label>
                 <input type="text" id="content" class="form-control" rows="4">
             </div>
 
@@ -175,7 +197,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const serviceId = urlParams.get('service');
         const price = urlParams.get('price');
-
+        
         const services = [
             { id: 'service1', name: 'Dịch vụ 1', price: 100000 },
             { id: 'service2', name: 'Dịch vụ 2', price: 200000 },
@@ -186,7 +208,7 @@
         ];
 
         const selectedService = services.find(s => s.id === serviceId);
-
+        console.log("check", selectedService);
         if (selectedService && selectedService.price == price) {
             document.getElementById('serviceName').value = selectedService.name;
             document.getElementById('price').value = selectedService.price.toLocaleString() + ' VNĐ';
@@ -196,17 +218,49 @@
             window.location.href = 'service_selection.html';
         }
 
+        function validateAccountNumber(input) {
+            const errorElement = document.getElementById('accountNumberError');
+            const value = input.value.replace(/[^0-9]/g, '');
+            input.value = value;
+
+            if (value.length < 8 || value.length > 16) {
+                input.classList.add('error');
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('error');
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
         document.getElementById('transactionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
+            
+            if (!validateAccountNumber(document.getElementById('accountNumber'))) {
+                return;
+            }
+        
             const submitBtn = this.querySelector('.submit-btn');
             const spinner = this.querySelector('.spinner');
             
             submitBtn.classList.add('loading');
             spinner.style.display = 'block';
             
-            // Simulate processing
+            // Store form data in sessionStorage
+            const formData = {
+                service: document.getElementById('serviceName').value,
+                price: document.getElementById('priceValue').value,
+                recipient: document.getElementById('recipient').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                content: document.getElementById('content').value
+            };
+            
+            sessionStorage.setItem('transactionData', JSON.stringify(formData));
+            
+            // Redirect to OTP page after a short delay
             setTimeout(() => {
-                window.location.href = 'transaction_result.html?success=true';
+                window.location.href = 'OTP.html?from=transaction_form';
             }, 1500);
         });
     </script>

@@ -18,7 +18,10 @@
                 <input type="file" id="fileInput" accept="image/*" style="display: none">
                 <button type="button" class="upload-btn" id="fileBtn">Tải lên</button>
             </div>
-            <button type="submit" class="upload-btn">Xác nhận</button>
+            <button type="submit" class="upload-btn">
+                <span>Xác nhận</span>
+                <div class="spinner"></div>
+            </button>
         </form>
         <button onclick="window.location.href='login.html'" class="link-btn">
             Quay lại trang đăng nhập
@@ -69,8 +72,25 @@
 
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Tải lên thành công!');
-            window.location.href = 'login.html';
+            
+            const frontFile = document.getElementById('frontId').files[0];
+            const backFile = document.getElementById('backId').files[0];
+            
+            if (frontFile && backFile) {
+                // Store upload info in session if needed
+                sessionStorage.setItem('uploadStatus', 'completed');
+                
+                // Show loading state
+                const submitBtn = this.querySelector('.upload-btn');
+                const spinner = submitBtn.querySelector('.spinner');
+                submitBtn.classList.add('loading');
+                spinner.style.display = 'block';
+                
+                // Redirect to OTP page after short delay
+                setTimeout(() => {
+                    window.location.href = 'OTP.html?from=register';
+                }, 1500);
+            }
         });
     </script>
 </body>

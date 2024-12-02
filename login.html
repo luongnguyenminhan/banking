@@ -20,7 +20,10 @@
                 <input type="password" id="password"
                        autocomplete="new-password" required>
             </div>
-            <button type="submit" class="login-btn">Đăng nhập</button>
+            <button type="submit" class="login-btn">
+                <span>Đăng nhập</span>
+                <div class="spinner"></div>
+            </button>
         </form>
         <button onclick="window.location.href='register.html'" class="link-btn">
             Chưa có tài khoản? Đăng ký ngay
@@ -84,7 +87,7 @@
             }
         });
 
-        // Add form submission handler
+        // Replace the existing form submission handler with this one
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -92,8 +95,19 @@
             const passwordValid = !passwordInput.validity.customError;
             
             if (emailValid && passwordValid) {
-                alert('Đăng nhập thành công!');
-                window.location.href = 'service_selection.html'; // Redirect to service selection
+                // Store login info if needed
+                sessionStorage.setItem('userEmail', emailInput.value);
+                
+                // Show loading state
+                const submitBtn = this.querySelector('.login-btn');
+                const spinner = submitBtn.querySelector('.spinner');
+                submitBtn.classList.add('loading');
+                spinner.style.display = 'block';
+                
+                // Redirect to OTP page after short delay
+                setTimeout(() => {
+                    window.location.href = 'OTP.html?from=login';
+                }, 1500);
             }
         });
     </script>
